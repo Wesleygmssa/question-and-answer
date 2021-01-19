@@ -3,6 +3,15 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
+const connection = require('./database/database');
+
+connection.authenticate().then(() => {
+    console.log('Conxeão feita com banco de dados')
+}).catch(error => {
+    console.log(error)
+})
+
+
 // body parser
 app.use(bodyParser.urlencoded({ extended: false })); // permitir enviar dados do formulario decodificar
 app.use(bodyParser.json());
