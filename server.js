@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const connection = require('./database/database');
-require('./database/Pergunta');
+const PerguntaModel = require('./database/Pergunta');
 
 connection.authenticate().then(() => {
     console.log('Conxeão feita com banco de dados')
@@ -34,10 +34,18 @@ app.get("/perguntar", (req, res) => {
 
 //
 app.post('/salvarpergunta', (req, res) => {
+
+    //salvando banco de dados
     const { title, description } = req.body;
 
-    console.log(title)
-    console.log(description)
+    PerguntaModel.create({
+        title,
+        description
+    }).then(() => {
+        res.redirect('/');
+    });
+
+
 });
 
 app.listen(3333, () => {
