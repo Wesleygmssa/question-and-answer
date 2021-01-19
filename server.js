@@ -21,9 +21,11 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 
-    res.render("index");
+    const perguntas = await PerguntaModel.findAll({ raw: true });
+    console.log(perguntas)
+    res.render("index", { perguntas });
 });
 
 app.get("/perguntar", (req, res) => {
@@ -31,11 +33,7 @@ app.get("/perguntar", (req, res) => {
 });
 
 
-
-//
 app.post('/salvarpergunta', (req, res) => {
-
-    //salvando banco de dados
     const { title, description } = req.body;
 
     PerguntaModel.create({
