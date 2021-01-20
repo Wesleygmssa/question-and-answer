@@ -1,5 +1,4 @@
 const express = require("express");
-
 const app = express();
 const bodyParser = require("body-parser");
 const connection = require('./database/database');
@@ -9,9 +8,8 @@ const Resposta = require('./database/Resposta');
 connection.authenticate().then(() => {
     // console.log('Conxeão feita com banco de dados')
 }).catch(error => {
-    console.log(error)
-})
-
+    console.log(error);
+});
 
 // body parser
 app.use(bodyParser.urlencoded({ extended: false })); // permitir enviar dados do formulario decodificar
@@ -47,22 +45,30 @@ app.post('/salvarpergunta', async (req, res) => {
 
 app.get('/pergunta/:id', async (req, res) => {
     var id = req.params.id;
-    const pergunta = await PerguntaModel.findOne({ where: { id: id } });
+    const pergunta = await PerguntaModel.findOne(
+        {
+            where: { id: id },
+        });
     if (pergunta != undefined) { //pergunta achada
-        res.render("pergunta", { pergunta });
+        await Resposta.findAll({
+            where: { perguntaId: pergunta.id },
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+            .then((respostas) => {
+                res.render("pergunta", {
+                    pergunta,
+                    respostas
+                });
+            });
+
+        res.render("pergunta", {
+            pergunta
+        });
     } else { // não encontrada
         res.redirect('/');
     }
-    // PerguntaModel.findOne({
-    //     where: { id: id }
-    // }).then((pergunta) => {
-    //     console.log(pergunta)
-    //     if (pergunta != undefined) { //pergunta achada
-    //         res.render("pergunta");
-    //     } else { // não encontrada
-    //         res.redirect('/');
-    //     }
-    // })
 });
 
 app.post("/responder", (req, res) => {
@@ -76,7 +82,7 @@ app.post("/responder", (req, res) => {
         res.redirect(/pergunta/ + perguntaId);
     }).catch(error => {
         console.log('error na aplicação' + error)
-    })
+    });
 });
 
 

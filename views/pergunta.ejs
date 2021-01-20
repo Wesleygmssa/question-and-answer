@@ -22,6 +22,21 @@
                     <br>
                     <button type="submit" class="btn btn-primary">Responder</button>
                 </form>
+
+                <hr>
+                <h3>Resposta</h3>
+                <hr>
+                <% respostas.forEach(resposta=>{%>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>
+                                <%= resposta.corpo %>
+                            </p>
+                        </div>
+                    </div>
+                    <%})%>
+
             </div>
 
             <!-- Optional JavaScript; choose one of the two! -->
