@@ -11,6 +11,17 @@
                     <%= pergunta.description %>
                 </p>
                 <hr>
+
+                <form action="/responder" method="POST">
+                    <label for="">
+                        <h3>Resposta</h3>
+                    </label>
+                    <textarea name="corpo" placeholder="Digite sua resposta" cols="30" rows="10"
+                        class="form-control"></textarea>
+                    <input type="hidden" name="perguntaId" value="<%= pergunta.id %>"> <!-- colocando valor -->
+                    <br>
+                    <button type="submit" class="btn btn-primary">Responder</button>
+                </form>
             </div>
 
             <!-- Optional JavaScript; choose one of the two! -->

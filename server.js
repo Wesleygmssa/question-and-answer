@@ -25,9 +25,7 @@ app.use(express.static('public'));
 
 //renderizando pagina
 app.get("/", async (req, res) => {
-
     const perguntas = await PerguntaModel.findAll({ raw: true, order: [['id', 'DESC']] });
-    console.log(perguntas)
     res.render("index", { perguntas });
 });
 
@@ -39,15 +37,12 @@ app.get("/perguntar", (req, res) => {
 //salvando banco de dados
 app.post('/salvarpergunta', async (req, res) => {
     const { title, description } = req.body;
-
     await PerguntaModel.create({
         title,
         description
     }).then(() => {
         res.redirect('/');
     });
-
-
 });
 
 app.get('/pergunta/:id', async (req, res) => {
@@ -58,7 +53,6 @@ app.get('/pergunta/:id', async (req, res) => {
     } else { // não encontrada
         res.redirect('/');
     }
-
     // PerguntaModel.findOne({
     //     where: { id: id }
     // }).then((pergunta) => {
@@ -69,8 +63,23 @@ app.get('/pergunta/:id', async (req, res) => {
     //         res.redirect('/');
     //     }
     // })
-
 });
+
+app.post("/responder", (req, res) => {
+    const { corpo } = req.body;
+    const { perguntaId } = req.body;
+    console.log(perguntaId, corpo)
+    Resposta.create({
+        corpo,
+        perguntaId
+    }).then(() => {
+        res.redirect(/pergunta/ + perguntaId);
+    }).catch(error => {
+        console.log('error na aplicação' + error)
+    })
+});
+
+
 
 app.listen(3333, () => {
     console.log("Started run dev");
