@@ -51,7 +51,7 @@ app.post('/salvarpergunta', async (req, res) => {
 
 app.get('/pergunta/:id', async (req, res) => {
     var id = req.params.id;
-    const pergunta = await PerguntaModel.findOne({ where: { id: id } })
+    const pergunta = await PerguntaModel.findOne({ where: { id: id } });
     if (pergunta != undefined) { //pergunta achada
         res.render("pergunta", { pergunta });
     } else { // não encontrada
