@@ -4,9 +4,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const connection = require('./database/database');
 const PerguntaModel = require('./database/Pergunta');
+const Resposta = require('./database/Resposta');
 
 connection.authenticate().then(() => {
-    console.log('Conxeão feita com banco de dados')
+    // console.log('Conxeão feita com banco de dados')
 }).catch(error => {
     console.log(error)
 })
